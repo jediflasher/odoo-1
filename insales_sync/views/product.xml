@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- base structure of product.template, common with product.product -->
+  <record id="product_template_form_with_insales_sync" model="ir.ui.view">
+    <field name="name">product.template.insales.sync.common.form</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_form_view" />
+    <field name="arch" type="xml">
+      <xpath expr="//notebook" position="inside">
+        <field name="insales_sync_visible"
+               groups="base.group_no_one"
+               attrs="{'invisible':True}"/>
+        <page string="InSales" name="insales_sync">
+          <group >
+            <field name="insales_sync_public_url"
+                   string="Public Page"
+                   widget="url"/>
+            <field name="insales_sync_admin_url"
+                   string="Admin Page"
+                   widget="url"/>
+          </group>
+          
+          <group cols="2">
+            <group name="insales_sync_toggles"
+                   attrs="{'invisible':[('insales_sync_variant_id','=',False)]}">
+              <separator string="Settings"/>
+              <field name="insales_sync_skip_price"/>
+              <field name="insales_sync_skip_qty"/>
+              <field name="insales_sync_skip_weight"/>
+            </group>
+            <group name="insales_sync_references">
+                <separator string="Status"/>
+                <field name="insales_sync_permalink"
+                       string="permalink"
+                       groups="insales_sync.group_manager"/>
+                <field name="insales_sync_product_id"
+                       string="Product ID"
+                       groups="insales_sync.group_manager"/>
+                <field name="insales_sync_variant_id"
+                       string="Variant ID"
+                       groups="insales_sync.group_manager"/>
+                <field name="insales_sync_timestamp"
+                       string="Last Syncronization"
+                       readonly="1"/>
+            </group>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- action menu -->
+  <record model="ir.actions.server" id="product_template_insales_sync_server_action">
+    <field name="name">InSales Sync</field>
+    <field name="model_id" ref="model_product_template"/>
+    <field name="binding_model_id" ref="model_product_template" />
+    <field name="type">ir.actions.server</field>
+    <field name="groups_id" eval="[(4,ref('insales_sync.group_manager'))]"/>
+    <field name="state">code</field>
+    <field name="code">
+      if records:
+          action = records.insales_sync_now_action()
+    </field>
+  </record>
+
+  <!-- action menu -->
+  <record model="ir.actions.server" id="product_product_insales_sync_server_action">
+    <field name="name">InSales Sync</field>
+    <field name="model_id" ref="model_product_product"/>
+    <field name="binding_model_id" ref="model_product_product" />
+    <field name="type">ir.actions.server</field>
+    <field name="groups_id" eval="[(4,ref('insales_sync.group_manager'))]"/>
+    <field name="state">code</field>
+    <field name="code">
+      if records:
+          action = records.insales_sync_now_action()
+    </field>
+  </record>
+
+  <!-- synchronization status views -->
+  <record id="product_product_insales_sync_view" model="ir.ui.view">
+    <field name="name">product.product.insales.sync.view</field>
+    <field name="model">product.product</field>
+    <field name="view_type">tree</field>
+    <field name="arch" type="xml">
+      <tree string="Product Syncronization Status"
+            delete="false"
+            default_order="insales_sync_timestamp">
+        <field name="default_code"/>
+        <field name="name"/>
+        <field name="insales_sync_timestamp"/>
+        <field name="insales_sync_public_url" widget="url"/>
+        <field name="insales_sync_admin_url" widget="url"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="product_product_insales_sync_act" model="ir.actions.act_window">
+    <field name="name">Product Synchronization Status</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">product.product</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="product_product_insales_sync_view"/>
+  </record>
+</odoo>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="insales_sync_config_form" model="ir.ui.view">
+    <field name="name">insales_sync.config.form</field>
+    <field name="model">insales_sync.config</field>
+    <field name="view_type">form</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet string="InSales Configuration">
+          <div class="oe_button_box" name="button_box">
+            <button name="toggle_prod_environment"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-check-square">
+              <field name="prod_environment"
+                     widget="boolean_button"
+                     options='{"terminology": {
+                              "string_true": "Production Environment",
+                              "hover_true": "Switch to test environment",
+                              "string_false": "Test Environment",
+                              "hover_false": "Switch to production environment"
+                              }}'/>
+            </button>
+            <button name="toggle_active"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-archive">
+              <field name="active"
+                     widget="boolean_button"
+                     options='{"terminology": "active"}'/>
+            </button>
+            <button type="object"
+                    string="Update Categories"
+                    name="update_categories_action"
+                    class="oe_class_button"
+                    icon="fa-cloud-download"/>
+            <button type="object"
+                    string="Run Synchronization"
+                    name="sync_now_action"
+                    class="oe_class_button"
+                    icon="fa-refresh"
+                    attrs="{'invisible': [('active', '!=', True)]}"/>
+          </div>
+
+          <div class="oe_title">
+            <label class="oe_edit_only" for="name" string="Configuration Name"/>
+            <h1><field name="name" placeholder="Configuration Name"/></h1>
+            <div name="options">
+              <button type="action"
+                      string="Synchronization Status"
+                      name="insales_sync.product_product_insales_sync_act"
+                      class="oe_link oe_inline"/>
+            </div>
+          </div>
+
+          <notebook>
+            <page string="Connection">
+              <group col="4">
+                <field name="host" colspan="4"/>
+                <field name="api_key"/>
+                <field name="api_password" password="true"/>
+              </group>
+            </page>
+
+            <page string="Categories">
+              <div>
+                <p></p>
+                <p>
+                  Products in these InSales categories will be synchronized
+                  (children categories are included)
+                </p>
+              </div>
+              <field name="categories">
+                <tree create="false"
+                      edit="true"
+                      editable="bottom"
+                      options="{'no_open': True}">
+                  <field name="path_named" string="Category" readonly="True"/>
+                  <field name="sync"/>
+                  <field name="insales_id" invisible="1"/>
+                  <field name="parent_path" invisible="1"/>
+                </tree>
+              </field>
+            </page>
+
+            <page string="Prices">
+              <div>
+                <p></p>
+                <p>Price sources for price synchronization.</p>
+                <p>First pricelist is requered for price synchronizetion.</p>
+                <p>
+                  Second pricelist is optional and requered only for "old price"
+                  computation.
+                </p>
+              </div>
+              <group>
+                <field name="pricelist_id"/>
+                <field name="old_pricelist_id"/>
+              </group>
+            </page>
+
+            <page string="Quantity">
+              <div>
+                <p></p>
+                <p>
+                  Quantity of Products from these Locations will be
+                  synchronized to these InSales fields of variants
+                </p>
+              </div>
+              <field name="quantity_fields">
+                <tree create="true"
+                      edit="true"
+                      editable="bottom"
+                      options="{'no_open': True}">
+                  <field name="location"/>
+                  <field name="insales_field"/>
+                  <field name="is_additional"/>
+                  <field name="insales_field_id"/>
+                </tree>
+              </field>
+            </page>
+
+            <page string="Weight">
+              <div>
+                <p></p>
+                <p>
+                  Synchronize the product's weight to the InSales variant's
+                  "weight" field.
+                </p>
+              </div>
+              <group>
+                <field name="sync_weight" string="Synchronize Weight"/>
+                <field name="sync_weight_skip_zero" string="Skip Zero Weight"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="insales_sync_connections_tree" model="ir.ui.view">
+    <field name="name">insales_sync.config.tree</field>
+    <field name="model">insales_sync.config</field>
+    <field name="view_type">tree</field>
+    <field name="arch" type="xml">
+      <tree string="InSales Configurations">
+        <field name="name" />
+        <field name="host" />
+        <field name="api_key" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="insales_sync_config_action" model="ir.actions.act_window">
+    <field name="name">InSales Configurations</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">insales_sync.config</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">
+        Click to define a new InSales configuration.
+      </p>
+    </field>
+  </record>
+</odoo>

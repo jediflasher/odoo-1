@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+insales_sync_config_manager,InSales Config Edit Access,model_insales_sync_config,insales_sync.group_manager,1,1,1,1
+insales_sync_config_category_manager,InSales Config Category Edit Access,model_insales_sync_config_category,insales_sync.group_manager,1,1,1,1
+insales_sync_config_quantity_manager,InSales Config Quantity Edit Access,model_insales_sync_config_quantity,insales_sync.group_manager,1,1,1,1
+insales_sync_sync_product_manager,InSales Product Sync Edit Access,model_insales_sync_sync_product,insales_sync.group_manager,1,1,1,1

@@ -1,0 +1,20 @@
+{
+    "name": "InSales Synchronization",
+    "summary": "Two-way data syncronization with InSales platform",
+    "author": "Amperka",
+    "website": "https://amperka.ru",
+    "category": "Tools",
+    "version": "11.0.1.2.1",
+    "license": "AGPL-3",
+    "depends": ["base_setup", "sale", "stock", "product"],
+    "external_dependencies": {"python": ["insales"]},
+    "data": [
+        "data/scheduler.xml",
+        "security/groups.xml",
+        "security/ir.model.access.csv",
+        "views/product.xml",
+        "views/res_config_settings_views.xml",
+        "views/settings.xml",
+    ],
+    "installable": True,
+}
