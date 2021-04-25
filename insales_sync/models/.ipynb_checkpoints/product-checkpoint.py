@@ -30,6 +30,7 @@ class ProductTemplate(models.Model):
         for template in self - unique_variants:
             template.insales_sync_variant_id = False
 
+    @api.one
     def _set_insales_sync_variant_id(self):
         if len(self.product_variant_ids) == 1:
             self.product_variant_ids.insales_sync_variant_id = (
@@ -55,6 +56,7 @@ class ProductTemplate(models.Model):
         for template in self - unique_variants:
             template.insales_sync_skip_price = False
 
+    @api.one
     def _set_insales_sync_skip_price(self):
         if len(self.product_variant_ids) == 1:
             self.product_variant_ids.insales_sync_skip_price = (
@@ -80,6 +82,7 @@ class ProductTemplate(models.Model):
         for template in self - unique_variants:
             template.insales_sync_skip_qty = False
 
+    @api.one
     def _set_insales_sync_skip_qty(self):
         if len(self.product_variant_ids) == 1:
             self.product_variant_ids.insales_sync_skip_qty = self.insales_sync_skip_qty
@@ -103,6 +106,7 @@ class ProductTemplate(models.Model):
         for template in self - unique_variants:
             template.insales_sync_skip_weight = False
 
+    @api.one
     def _set_insales_sync_skip_weight(self):
         if len(self.product_variant_ids) == 1:
             self.product_variant_ids.insales_sync_skip_weight = (
